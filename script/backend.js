@@ -116,10 +116,10 @@ function Board(emptyCellValue = null) {
 }
 
 function Player (name, side) {
-    let record = { win: 0, loss: 0 };
+    let record = { win: 0, loss: 0, tie: 0 };
 
     const cleanRecord = () => {
-        record = { win: 0, loss: 0 };
+        record = { win: 0, loss: 0, tie: 0 };
     }
 
     const getRecord = () => {
@@ -134,6 +134,10 @@ function Player (name, side) {
         record.loss++;
     }
 
+    const tie = () => {
+        record.tie++;
+    }
+
     return {
         name,
         side,
@@ -141,6 +145,7 @@ function Player (name, side) {
         getRecord,
         win,
         lose,
+        tie,
     };
 }
 
@@ -175,11 +180,18 @@ function TicTacToeGame() {
                 let win = checkWinner(x, y);
                 if (win) {
                     setState(1);
-                    winner = currentPlayer.name;
-                    currentPlayer.win();
-                    for (const player in players) {
-                        if (players[player] === currentPlayer) continue;
-                        players[player].lose();
+                    if(win.position < 0) {
+                        winner.direction = -1;
+                        for (const player in players) {
+                            players[player].tie();
+                        }
+                    } else {
+                        winner.player = currentPlayer.name;
+                        currentPlayer.win();
+                        for (const player in players) {
+                            if (players[player] === currentPlayer) continue;
+                            players[player].lose();
+                        }
                     }
                 } else {
                     turn = nextPlayerIndex();
@@ -192,8 +204,12 @@ function TicTacToeGame() {
         return gameState;
     }
 
-    const setState = (x) => {
-        gameState = x;
+    const setState = (newState) => {
+        gameState = newState;
+    }
+
+    const getPlayerTurn= () => {
+        return players[turn];
     }
 
     const resetTurns = () => {
@@ -212,22 +228,28 @@ function TicTacToeGame() {
         return (turn + 1) % players.length;
     }
 
+    const renamePlayer = (index, name) => {
+        players[index].name = name;
+    }
+
     const checkWinner = (x, y) => {
         let win;
         if (win = board.isFullRow(x, y)) {
             console.log(`win by ${win} on ${y}`);
-            return true;
+            return {win, position: y};
         } else if (win = board.isFullCol(x, y)) {
             console.log(`win by ${win} on ${x}`);
-            return true;
+            return {win, position: x};
         } else if (win = board.isFullDiagonal(x, y)) {
             console.log(`win by ${win}`);
-            return true;
+            return {win, position: 0};
+        } else if (win = board.isFullAntiDiagonal(x, y)) {
+            console.log(`win by ${win}`);
+            return {win, position: 0};
         } else if (win = board.isFull()) {
-            console.log(`tie`);
-            return false;
+            return {win, position: -1};
         }
-
+        return 0;
     }
 
     const getBoard = () => {
@@ -238,14 +260,13 @@ function TicTacToeGame() {
 
 
     return {
-        gameState,
-        board,
         newGame,
         reset,
         playMove,
         getBoard,
         getPlayerName,
         getPlayerStats,
-
+        getPlayerTurn,
+        renamePlayer,
     }
 }
