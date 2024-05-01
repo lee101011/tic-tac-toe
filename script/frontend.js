@@ -1,8 +1,8 @@
 const HTMLTicTacToe = function () {
+    const GRID_SIZE = 3;
     let game = TicTacToeGame();
     const grid = document.querySelector(".grid");
 
-    const GRID_SIZE = 3;
     const buildGameScreen = () => {
 
         grid.replaceChildren();
@@ -12,12 +12,8 @@ const HTMLTicTacToe = function () {
                 cell.dataset.row = i;
                 cell.dataset.column = j;
                 cell.classList.add("cell");
-                if(i !== 0) {
-                    cell.classList.add("border-top");
-                }
-                if(j !== 0) {
-                    cell.classList.add("border-left");
-                }
+                if(i !== 0) cell.classList.add("border-top");
+                if(j !== 0) cell.classList.add("border-left");
                 const content = game.getBoard()[i][j];
                 if(content) {
                     cell.textContent = content;

@@ -17,15 +17,14 @@ function Cell() {
     };
 }
 
-function Board(emptyCellValue = null) {
+function Board(size = 3, emptyCellValue = null) {
 
-    const createBoard = (size) => {
+    const createBoard = () => {
         let arr = [];
-        boardSize = size;
-        if (boardSize < 1) boardSize = 1;
-        for (let i = 0; i < boardSize; i++) {
+        if (size < 1) size = 1;
+        for (let i = 0; i < size; i++) {
             arr[i] = [];
-            for (let j = 0; j < boardSize; j++) {
+            for (let j = 0; j < size; j++) {
                 arr[i][j] = Cell();
             }
         }
@@ -36,7 +35,7 @@ function Board(emptyCellValue = null) {
         return cells.map( (row) => row.map( (cell) => cell.getContent() ) );
     }
     const reset = () => {
-        cells = createBoard(boardSize);
+        cells = createBoard(size);
     }
 
     const isEmptyCell = (cell) => {
@@ -103,8 +102,7 @@ function Board(emptyCellValue = null) {
 
 
     const EMPTY_CELL = emptyCellValue;
-    let boardSize = 3;
-    let cells = createBoard(boardSize);
+    let cells = createBoard(size);
 
     return {
         reset,
@@ -143,7 +141,7 @@ function Player (name, side) {
     };
 }
 
-function TicTacToeGame() {
+function TicTacToeGame(grid_size = 3) {
 
     const players = [Player("Player 1", "X"), Player("Player 2", "O")];
     const board = Board();
@@ -233,6 +231,7 @@ function TicTacToeGame() {
             console.log(`win by ${win}`);
             return {win, position: 0};
         } else if (win = board.isFull()) {
+            console.log(`tie`);
             return {win, position: -1};
         }
         return 0;
