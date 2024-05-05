@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 html,
@@ -50,22 +51,27 @@ main {
     grid-template-rows: repeat(3, 1fr);
 }
 
-.controls {}
+.controls {
+    display: flex;
+    justify-content: center;
+}
+
+.controls > button {
+    margin: 1rem;
+    padding: 1rem 3rem;
+    font-size: 2rem;
+}
 
 .cell {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: calc(4rem + 15vh);
+    font-size: 10rem;
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
+    overflow: hidden;
 }
-
-/*.cell:after:empty {
-    content: 'l';
-    visibility: hidden;
-}*/
 
 .border-top {
     border-top: 0.5rem solid black;

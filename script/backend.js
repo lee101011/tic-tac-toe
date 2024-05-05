@@ -129,7 +129,7 @@ function Player (name, side) {
     }
 
     const win = () => {
-        record.win++;
+        record++;
     }
 
     return {
@@ -146,7 +146,7 @@ function TicTacToeGame(grid_size = 3) {
     const players = [Player("Player 1", "X"), Player("Player 2", "O")];
     const board = Board();
     let turn = 0;
-    let winner = { player: null, direction: null };
+    let winner = { player: null, direction: null, position: 0 };
     let gameState = 0;
 
     const reset = () => {
@@ -156,13 +156,19 @@ function TicTacToeGame(grid_size = 3) {
         }
         resetTurns();
         setState(0);
+        winner = { player: null, direction: null, position: 0 };
     }
 
     const newGame = () => {
         board.reset();
         resetTurns();
         gameState = 0;
+        winner = { player: null, direction: null, position: 0 };
     }
+
+    const getWinner = () => {
+        return winner;
+    };
 
     const playMove = (x, y) => {
         let currentPlayer = players[turn];
@@ -176,6 +182,9 @@ function TicTacToeGame(grid_size = 3) {
                         winner.direction = -1;
                     } else {
                         winner.player = currentPlayer.name;
+                        winner.direction = win.direction;
+                        winner.position = win.position;
+                        currentPlayer.win();
                     }
                 } else {
                     turn = nextPlayerIndex();
@@ -192,7 +201,7 @@ function TicTacToeGame(grid_size = 3) {
         gameState = newState;
     }
 
-    const getPlayerTurn= () => {
+    const getPlayerTurn = () => {
         return players[turn];
     }
 
@@ -251,6 +260,7 @@ function TicTacToeGame(grid_size = 3) {
         getPlayerName,
         getPlayerStats,
         getPlayerTurn,
+        getWinner,
         renamePlayer,
     }
 }
