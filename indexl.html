@@ -11,6 +11,17 @@
 </head>
 
 <body>
+
+    <dialog id="in">
+        <form method="dialog">
+            <label for="name1">Player 1 Name:</label>
+            <input type="text" name="name" id="name1"><br>
+            <label for="name2">Player 2 Name:</label>
+            <input type="text" name="name" id="name2"><br>
+            <button id="save">Save</button>
+        </form>
+    </dialog>
+
     <main>
         <div class="display">
             <h1>Tic-Tac-Toe</h1>
@@ -30,8 +41,8 @@
             <div class="grid"></div>
         </div>
         <div class="controls">
-            <button class="reset">Reset Game</button>
-            <button class="restart">Play Again</button>
+            <button class="reset">Reset Score</button>
+            <button class="restart">Clear Board</button>
         </div>
     </main>
 </body>

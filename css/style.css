@@ -1,6 +1,6 @@
 * {
     margin: 0;
-    padding: 0;
+    margin: 0;
     box-sizing: border-box;
 }
 
@@ -8,6 +8,10 @@ html,
 body {
     width: 100vw;
     height: 100vh;
+}
+
+dialog {
+    margin: auto;
 }
 
 main {
@@ -28,6 +32,16 @@ main {
     width: 50%;
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
+}
+
+.player {
+    border: 1px solid black;
+    padding: 1rem;
+}
+
+.player:hover {
+    cursor: pointer;
 }
 
 .score {

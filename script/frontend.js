@@ -7,6 +7,10 @@ const HTMLTicTacToe = function () {
     const message = document.querySelector(".message");
     const play1 = document.querySelector("#play1");
     const play2 = document.querySelector("#play2");
+    const modal = document.querySelector("#in");
+    const modaltext1 = document.querySelector("#name1");
+    const modaltext2 = document.querySelector("#name2");
+    const save = document.querySelector("#save");
 
     const buildGameScreen = (messageText = `${game.getPlayerTurn().name} to play`) => {
 
@@ -17,10 +21,10 @@ const HTMLTicTacToe = function () {
                 cell.dataset.row = i;
                 cell.dataset.column = j;
                 cell.classList.add("cell");
-                if(i !== 0) cell.classList.add("border-top");
-                if(j !== 0) cell.classList.add("border-left");
+                if (i !== 0) cell.classList.add("border-top");
+                if (j !== 0) cell.classList.add("border-left");
                 const content = game.getBoard()[i][j];
-                if(content) {
+                if (content) {
                     cell.textContent = content;
                 }
                 grid.appendChild(cell);
@@ -32,7 +36,7 @@ const HTMLTicTacToe = function () {
         message.textContent = messageText;
         play2.childNodes[1].textContent = game.getPlayerName(1);
         play2.childNodes[3].textContent = game.getPlayerStats(1);
-        
+
     };
 
     const registerListeners = () => {
@@ -44,9 +48,9 @@ const HTMLTicTacToe = function () {
             game.playMove(row, col);
             let winner = game.getWinner();
             let text;
-            if( winner.direction !== null) {
-                
-                if(winner.direction === -1 ) {
+            if (winner.direction !== null) {
+
+                if (winner.direction === -1) {
                     text = "Tie";
                 } else {
                     text = `${winner.player} wins!`;
@@ -64,6 +68,43 @@ const HTMLTicTacToe = function () {
 
         restart.addEventListener("click", (event) => {
             game.newGame();
+            buildGameScreen();
+        });
+
+
+        const createModalEvent = (trigger) => {
+            trigger.addEventListener("click", (event) => {
+                modaltext1.value = `${game.getPlayerName(0)}`;
+                modaltext2.value = `${game.getPlayerName(1)}`;
+                modal.showModal();
+                if (trigger.childNodes[1].textContent === game.getPlayerName(1)) {
+                    modaltext2.focus();
+                    modaltext2.select();
+                } else {
+                    modaltext1.focus();
+                    modaltext1.select();
+                }
+            });
+        };
+
+        createModalEvent(play1);
+        createModalEvent(play2);
+
+        modal.addEventListener("click", (event) => {
+            const dimensions = modal.getBoundingClientRect();
+            if (
+                event.clientX < dimensions.left ||
+                event.clientX > dimensions.right ||
+                event.clientY < dimensions.top ||
+                event.clientY > dimensions.bottom
+            ) {
+                modal.close();
+            }
+        });
+
+        save.addEventListener("click", (event) => {
+            game.renamePlayer(0, modaltext1.value);
+            game.renamePlayer(1, modaltext2.value);
             buildGameScreen();
         });
     }
